@@ -1,0 +1,59 @@
+{% extends 'prediksi/base.html' %}
+
+{% block title %}Tentang Aplikasi{% endblock %}
+{% block judul_halaman %}Tentang Aplikasi{% endblock %}
+{% block subjudul %}Mini Project: Prediksi dan Klasifikasi Biaya Listrik Rumah{% endblock %}
+
+{% block konten %}
+<div class="card tentang">
+    <h2 class="card-title">Tujuan Aplikasi</h2>
+    <p>ListrikSmart membantu pengguna memperkirakan biaya listrik rumah per bulan berdasarkan jumlah penghuni,
+        perangkat elektronik, lama pemakaian, daya listrik, dan tarif per kWh, sekaligus memberi saran penghematan.</p>
+</div>
+
+<div class="card tentang">
+    <h2 class="card-title">Latar Belakang</h2>
+    <p>Biaya listrik sering sulit diperkirakan karena dipengaruhi banyak faktor sekaligus. Dengan memahami
+        perangkat dan kebiasaan yang paling berpengaruh, rumah tangga dapat merencanakan pengeluaran dan menekan
+        pemborosan energi.</p>
+</div>
+
+<section class="grid-2">
+    <div class="card tentang">
+        <h2 class="card-title">Metode Machine Learning</h2>
+        <ul>
+            <li><strong>Regresi:</strong> Random Forest Regressor memprediksi estimasi biaya listrik bulanan dalam rupiah.</li>
+            <li><strong>Klasifikasi:</strong> Random Forest Classifier menentukan kategori HEMAT, NORMAL, atau TINGGI.</li>
+            <li>Model dilatih di Google Colab dengan 1.000 baris data <em>sintetis</em> (simulasi), bukan pengukuran rumah tangga sebenarnya, sehingga hasilnya berupa estimasi.</li>
+            <li>Terdapat 12 fitur masukan: jumlah penghuni, jumlah dan jam pakai perangkat, daya listrik, dan tarif.</li>
+        </ul>
+    </div>
+    <div class="card tentang">
+        <h2 class="card-title">Teknologi yang Digunakan</h2>
+        <ul>
+            <li>Python dan Django (Django Template)</li>
+            <li>PostgreSQL untuk menyimpan riwayat prediksi</li>
+            <li>Scikit-learn, Pandas, NumPy, dan Joblib</li>
+            <li>HTML, CSS, JavaScript, dan Chart.js untuk grafik</li>
+            <li>Google Gemini API (library google-genai)</li>
+        </ul>
+    </div>
+</section>
+
+<div class="card tentang">
+    <h2 class="card-title">Fungsi Google Gemini AI</h2>
+    <p>Gemini menjadi Asisten AI yang menjelaskan hasil prediksi, menjelaskan kategori biaya, menunjuk perangkat yang
+        berpotensi boros, serta menjawab pertanyaan seputar penghematan listrik. Asisten menerima data hasil prediksi
+        yang tersimpan, dan pemanggilannya dilakukan lewat backend sehingga API Key tidak terlihat di browser.</p>
+</div>
+
+<div class="card tentang">
+    <h2 class="card-title">Cara Menggunakan</h2>
+    <ol>
+        <li>Buka <strong>Prediksi Biaya</strong>, isi 12 kolom data, lalu tekan tombol prediksi.</li>
+        <li>Lihat estimasi biaya dan kategori. Hasil otomatis tersimpan.</li>
+        <li>Tekan <strong>Analisis dengan Asisten AI</strong> untuk mendapat penjelasan dan rekomendasi.</li>
+        <li>Pantau semua hasil di <strong>Riwayat Prediksi</strong> dan <strong>Visualisasi Data</strong>.</li>
+    </ol>
+</div>
+{% endblock %}

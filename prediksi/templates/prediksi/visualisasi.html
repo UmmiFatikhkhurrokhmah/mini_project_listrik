@@ -1,0 +1,75 @@
+{% extends 'prediksi/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'prediksi/css/ai-panel.css' %}">{% endblock %}
+{% block title %}Visualisasi Data{% endblock %}
+{% block judul_halaman %}Visualisasi Data{% endblock %}
+{% block subjudul %}Grafik dari riwayat prediksi yang tersimpan{% endblock %}
+
+{% block konten %}
+{% if data %}
+<section class="grid-2">
+    <div class="card">
+        <h2 class="card-title">Perbandingan Kategori</h2>
+        <p class="card-sub">Jumlah prediksi per kategori (total {{ total }}).</p>
+        <div class="chart-box"><canvas id="grafikKategori"></canvas></div>
+    </div>
+    <div class="card">
+        <h2 class="card-title">Rata-rata Biaya per Kategori</h2>
+        <p class="card-sub">Rata-rata estimasi biaya (Rp) pada setiap kategori.</p>
+        <div class="chart-box"><canvas id="grafikRata"></canvas></div>
+    </div>
+</section>
+
+<div class="card">
+    <h2 class="card-title">Estimasi Biaya dari Riwayat</h2>
+    <p class="card-sub">Maksimal 30 prediksi terakhir, dari yang terlama ke terbaru.</p>
+    <div class="chart-box chart-lebar"><canvas id="grafikWaktu"></canvas></div>
+    <p class="chart-error" id="chartError" hidden>Grafik tidak dapat dimuat. Periksa koneksi internet (Chart.js dimuat
+        dari CDN).</p>
+</div>
+
+{% include 'prediksi/_ai_panel.html' with jenis='grafik' lingkup='visualisasi' judul='Analisis AI untuk Grafik'
+deskripsi='AI membaca ketiga grafik di atas: perbandingan kategori, rata-rata biaya, dan tren estimasi dari riwayat.'
+tombol='Analisis Semua Grafik dengan AI' %}
+<div class="card">
+    <h2 class="card-title">Ringkasan per Kategori</h2>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kategori</th>
+                    <th>Jumlah Prediksi</th>
+                    <th>Rata-rata Estimasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in ringkasan %}
+                <tr>
+                    <td><span class="badge badge-{{ r.nama|lower }}">{{ r.nama }}</span></td>
+                    <td>{{ r.jumlah }}</td>
+                    <td>{% if r.jumlah %}Rp {{ r.rata|floatformat:"0g" }}{% else %}-{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ data|json_script:"data-visualisasi" }}
+{% else %}
+<div class="card kosong-card">
+    <h2 class="card-title">Belum ada data untuk divisualisasikan</h2>
+    <p class="card-sub">Grafik dibuat dari riwayat prediksi. Lakukan minimal satu prediksi terlebih dahulu.</p>
+    <a href="{% url 'prediksi' %}" class="btn">Buat Prediksi</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="{% static 'prediksi/js/charts.js' %}"></script>
+<script src="{% static 'prediksi/js/ai-analisis.js' %}"></script>
+{% endif %}
+{% endblock %}

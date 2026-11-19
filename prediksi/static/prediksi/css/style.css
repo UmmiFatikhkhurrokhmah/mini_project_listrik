@@ -1,0 +1,1184 @@
+/* ===== Variabel warna ===== */
+:root {
+    --navy: #0f2744;
+    --navy-2: #173a63;
+    --blue: #2878c8;
+    --blue-soft: #e8f4ff;
+    --bg: #f3f6fa;
+    --card: #ffffff;
+    --text: #1f2d3d;
+    --muted: #6b7a8c;
+    --border: #e2e8f0;
+    --sidebar-w: 260px;
+    --radius: 16px;
+
+    --hemat: #15803d;
+    --hemat-bg: #dcfce7;
+    --normal: #b45309;
+    --normal-bg: #fef3c7;
+    --tinggi: #b91c1c;
+    --tinggi-bg: #fee2e2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ===== Ikon ===== */
+.icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    background: linear-gradient(180deg, var(--navy), var(--navy-2));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 16px;
+    z-index: 50;
+    transition: transform .25s ease;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    text-decoration: none;
+    padding: 4px 8px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+
+.brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--blue);
+    display: grid;
+    place-items: center;
+}
+
+.brand-text {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.menu {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: #c9d8ea;
+    text-decoration: none;
+    font-size: 15px;
+    transition: background .15s, color .15s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+}
+
+.menu-item.active {
+    background: var(--blue);
+    color: #fff;
+    font-weight: 600;
+}
+
+.menu-item.disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.menu-item.disabled:hover {
+    background: transparent;
+    color: #c9d8ea;
+}
+
+.soon {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255, 255, 255, .15);
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    font-size: 12px;
+    color: #8fa8c4;
+    padding: 14px 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 39, 68, .5);
+    z-index: 40;
+}
+
+/* ===== Area utama ===== */
+.main {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+    width: calc(100% - var(--sidebar-w));
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 28px;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-title h1 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--navy);
+}
+
+.topbar-title p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.topbar-title p:empty {
+    display: none;
+}
+
+.topbar-badge {
+    margin-left: auto;
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+.menu-toggle {
+    display: none;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--navy);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    padding: 28px;
+    max-width: 1200px;
+}
+
+/* ===== Komponen umum ===== */
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(15, 39, 68, .06);
+    border: 1px solid var(--border);
+}
+
+.card-title {
+    margin: 0 0 4px;
+    font-size: 18px;
+    color: var(--navy);
+}
+
+.card-sub {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 11px 20px;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #1f65ab;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+}
+
+.table th {
+    background: var(--blue-soft);
+    color: var(--navy);
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 13px;
+    border-bottom: 2px solid var(--border);
+}
+
+.table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.table .kosong {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.badge-hemat {
+    background: var(--hemat-bg);
+    color: var(--hemat);
+}
+
+.badge-normal {
+    background: var(--normal-bg);
+    color: var(--normal);
+}
+
+.badge-tinggi {
+    background: var(--tinggi-bg);
+    color: var(--tinggi);
+}
+
+/* ===== Responsif ===== */
+@media (max-width: 900px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    body.sidebar-open .sidebar {
+        transform: translateX(0);
+    }
+
+    body.sidebar-open .overlay {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+    }
+
+    .topbar {
+        padding: 12px 16px;
+    }
+
+    .topbar-badge {
+        display: none;
+    }
+
+    .content {
+        padding: 16px;
+    }
+}
+
+/* =====================================================
+   TAHAP 3-9: dashboard, form, riwayat, grafik, chat
+   ===================================================== */
+
+.btn-block {
+    width: 100%;
+    margin-top: 22px;
+    padding: 14px;
+    font-size: 16px;
+}
+
+.btn-light {
+    background: #fff;
+    color: var(--navy);
+}
+
+.btn-light:hover {
+    background: var(--blue-soft);
+}
+
+.btn-outline {
+    background: #fff;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+}
+
+.btn-outline:hover {
+    background: var(--blue-soft);
+}
+
+.card+.card,
+.grid-2+.card,
+.card+.grid-2,
+.stats+.grid-2,
+.hero+.stats,
+.alert+.card {
+    margin-top: 20px;
+}
+
+.grid-2+.grid-2 {
+    margin-top: 20px;
+}
+
+.link-lanjut {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.link-lanjut:hover {
+    text-decoration: underline;
+}
+
+/* Pesan */
+.messages {
+    margin-bottom: 18px;
+}
+
+.alert {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    border: 1px solid;
+}
+
+.alert-error {
+    background: var(--tinggi-bg);
+    color: var(--tinggi);
+    border-color: #fecaca;
+}
+
+.alert-success {
+    background: var(--hemat-bg);
+    color: var(--hemat);
+    border-color: #bbf7d0;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(120deg, var(--navy), var(--blue));
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 30px;
+}
+
+.hero h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.hero p {
+    margin: 0 0 18px;
+    max-width: 640px;
+    line-height: 1.6;
+    color: #dbe9f8;
+}
+
+/* Kartu statistik */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: 0 2px 10px rgba(15, 39, 68, .06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.kosong-card {
+    text-align: center;
+    padding: 40px 24px;
+}
+
+/* Aktivitas */
+.aktivitas {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+}
+
+.aktivitas li+li {
+    border-top: 1px solid var(--border);
+}
+
+.aktivitas a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.aktivitas-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.aktivitas-info small {
+    color: var(--muted);
+}
+
+/* Grafik */
+.chart-box {
+    position: relative;
+    height: 280px;
+}
+
+.chart-lebar {
+    height: 320px;
+}
+
+.chart-error {
+    color: var(--tinggi);
+    font-size: 14px;
+    margin: 10px 0 0;
+}
+
+/* Form */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--navy);
+}
+
+.field input,
+.field select,
+.filter input,
+.filter select,
+.chat-card select,
+.chat-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font: inherit;
+    background: #fff;
+    color: var(--text);
+}
+
+.field input:focus,
+.field select:focus,
+.filter input:focus,
+.filter select:focus,
+.chat-form textarea:focus,
+.chat-card select:focus {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+    border-color: var(--blue);
+}
+
+.errorlist {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    color: var(--tinggi);
+    font-size: 13px;
+}
+
+/* Hasil prediksi */
+.hasil-card {
+    border-left: 6px solid var(--blue);
+}
+
+.hasil-grid {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin: 14px 0;
+}
+
+.hasil-grid>div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hasil-angka {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--navy);
+}
+
+.badge-besar {
+    font-size: 16px;
+    padding: 8px 20px;
+    align-self: flex-start;
+}
+
+.keterangan {
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+.catatan {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 8px 0 0;
+}
+
+.aksi {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+/* Filter riwayat */
+.filter {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto auto;
+    gap: 10px;
+    margin-bottom: 18px;
+    align-items: center;
+}
+
+.filter .btn {
+    padding: 10px 18px;
+}
+
+.table-detail th {
+    width: 38%;
+    background: #f8fbff;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.pagination a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Tentang */
+.tentang p,
+.tentang li {
+    line-height: 1.7;
+}
+
+.tentang ul,
+.tentang ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.tentang p {
+    margin: 0;
+}
+
+/* Chat Asisten AI */
+.chat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.chat-konteks {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background: var(--blue-soft);
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.konteks-info {
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.konteks-info small {
+    color: var(--muted);
+}
+
+.chat-card select {
+    width: auto;
+    max-width: 100%;
+}
+
+.chat-box {
+    height: 420px;
+    overflow-y: auto;
+    padding: 14px;
+    background: var(--bg);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.bubble {
+    max-width: 82%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+.bubble p {
+    margin: 0;
+}
+
+.bubble p+p,
+.bubble p+ul,
+.bubble ul+p {
+    margin-top: 8px;
+}
+
+.bubble ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+
+.bubble-ai {
+    background: #fff;
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.bubble-user {
+    background: var(--blue);
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.bubble-error {
+    background: var(--tinggi-bg);
+    color: var(--tinggi);
+    border: 1px solid #fecaca;
+    align-self: flex-start;
+}
+
+.bubble-loading {
+    color: var(--muted);
+    font-style: italic;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    border: 1px solid var(--blue);
+    background: #fff;
+    color: var(--blue);
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.chip:hover {
+    background: var(--blue-soft);
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.chat-form textarea {
+    resize: none;
+    max-height: 140px;
+}
+
+.chat-form .btn:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+/* Responsif tambahan */
+@media (max-width: 1000px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filter {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .filter input[name="q"] {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 900px) {
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+    }
+
+    .hero {
+        padding: 22px;
+    }
+
+    .hero h2 {
+        font-size: 20px;
+    }
+
+    .hasil-angka {
+        font-size: 28px;
+    }
+
+    .bubble {
+        max-width: 92%;
+    }
+
+    .chat-box {
+        height: 360px;
+    }
+
+    .filter {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =====================================================
+   TEMA FUTURISTIC DARK - NEON CYAN & ELECTRIC BLUE
+   ===================================================== */
+
+:root {
+    --navy: #030056;
+    --navy-2: #080F14;
+    --blue: #00F9FF;
+    --blue-soft: rgba(0, 249, 255, 0.12);
+    --bg: #080F14;
+    --card: #101D26;
+    --text: #FFFFFF;
+    --muted: #A8B8C5;
+    --border: #243B48;
+
+    --hemat: #3DF2E0;
+    --hemat-bg: rgba(61, 242, 224, 0.12);
+    --normal: #FFD166;
+    --normal-bg: rgba(255, 209, 102, 0.12);
+    --tinggi: #FF6B81;
+    --tinggi-bg: rgba(255, 107, 129, 0.12);
+}
+
+/* Background dan teks */
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, #030056, #080F14);
+    border-right: 1px solid rgba(0, 249, 255, 0.15);
+}
+
+.brand-logo {
+    background: linear-gradient(135deg, #00F9FF, #3DF2E0);
+    color: #030056;
+    box-shadow: 0 0 18px rgba(0, 249, 255, 0.3);
+}
+
+.menu-item {
+    color: #B8C8D5;
+}
+
+.menu-item:hover {
+    background: rgba(0, 249, 255, 0.10);
+    color: #00F9FF;
+}
+
+.menu-item.active {
+    background: rgba(0, 249, 255, 0.16);
+    color: #00F9FF;
+    border: 1px solid rgba(0, 249, 255, 0.35);
+}
+
+.sidebar-footer {
+    color: #8FA8B8;
+}
+
+/* Area utama dan navbar */
+.main {
+    background: #080F14;
+}
+
+.topbar {
+    background: rgba(8, 15, 20, 0.95);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-title h1 {
+    color: #FFFFFF;
+}
+
+.topbar-title p {
+    color: #A8B8C5;
+}
+
+.topbar-badge {
+    background: rgba(0, 249, 255, 0.12);
+    color: #00F9FF;
+}
+
+.menu-toggle {
+    background: #101D26;
+    color: #00F9FF;
+    border-color: var(--border);
+}
+
+/* Card */
+.card,
+.stat {
+    background: #101D26;
+    border: 1px solid #243B48;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+}
+
+.card-title,
+.stat-value {
+    color: #FFFFFF;
+}
+
+.card-sub,
+.stat-label {
+    color: #A8B8C5;
+}
+
+/* Tombol */
+.btn {
+    background: #00F9FF;
+    color: #030056;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: #3DF2E0;
+    box-shadow: 0 0 16px rgba(0, 249, 255, 0.35);
+}
+
+.btn-light {
+    background: #243B48;
+    color: #FFFFFF;
+}
+
+.btn-light:hover,
+.btn-outline:hover {
+    background: rgba(0, 249, 255, 0.12);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #00F9FF;
+    border-color: #00F9FF;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(120deg, #030056, #075B72);
+    border: 1px solid rgba(0, 249, 255, 0.25);
+}
+
+.hero p {
+    color: #C4E8EE;
+}
+
+/* Tabel */
+.table th {
+    background: #122C3A;
+    color: #00F9FF;
+    border-bottom-color: #00F9FF;
+}
+
+.table td {
+    color: #E4EDF2;
+    border-bottom-color: #243B48;
+}
+
+.table tbody tr:hover {
+    background: rgba(0, 249, 255, 0.06);
+}
+
+.table .kosong {
+    color: #A8B8C5;
+}
+
+.table-detail th {
+    background: #122C3A;
+    color: #3DF2E0;
+}
+
+/* Form dan input */
+.field label {
+    color: #3DF2E0;
+}
+
+.field input,
+.field select,
+.filter input,
+.filter select,
+.chat-card select,
+.chat-form textarea {
+    background: #0B1720;
+    color: #FFFFFF;
+    border: 1px solid #34515F;
+}
+
+.field input::placeholder,
+.filter input::placeholder,
+.chat-form textarea::placeholder {
+    color: #8195A3;
+}
+
+.field input:focus,
+.field select:focus,
+.filter input:focus,
+.filter select:focus,
+.chat-form textarea:focus,
+.chat-card select:focus {
+    outline: 2px solid #00F9FF;
+    border-color: #00F9FF;
+}
+
+/* Hasil prediksi */
+.hasil-card {
+    border-left-color: #00F9FF;
+}
+
+.hasil-angka {
+    color: #00F9FF;
+}
+
+.link-lanjut,
+.pagination a {
+    color: #3DF2E0;
+}
+
+/* Status prediksi */
+.badge-hemat {
+    background: var(--hemat-bg);
+    color: var(--hemat);
+}
+
+.badge-normal {
+    background: var(--normal-bg);
+    color: var(--normal);
+}
+
+.badge-tinggi {
+    background: var(--tinggi-bg);
+    color: var(--tinggi);
+}
+
+/* Pesan notifikasi */
+.alert-error {
+    background: var(--tinggi-bg);
+    color: #FF899B;
+    border-color: #803A4A;
+}
+
+.alert-success {
+    background: var(--hemat-bg);
+    color: #3DF2E0;
+    border-color: #237C76;
+}
+
+/* Aktivitas */
+.aktivitas a {
+    color: #FFFFFF;
+}
+
+.aktivitas li+li {
+    border-top-color: #243B48;
+}
+
+.aktivitas-info small {
+    color: #A8B8C5;
+}
+
+/* Chat Asisten AI */
+.chat-konteks {
+    background: #122C3A;
+    border: 1px solid #243B48;
+}
+
+.chat-box {
+    background: #0B1720;
+    border-color: #243B48;
+}
+
+.bubble-ai {
+    background: #142631;
+    color: #FFFFFF;
+    border-color: #34515F;
+}
+
+.bubble-user {
+    background: #030056;
+    color: #FFFFFF;
+    border: 1px solid #00F9FF;
+}
+
+.bubble-error {
+    background: var(--tinggi-bg);
+    color: #FF899B;
+    border-color: #803A4A;
+}
+
+.bubble-loading {
+    color: #A8B8C5;
+}
+
+.chip {
+    background: transparent;
+    color: #00F9FF;
+    border-color: #00F9FF;
+}
+
+.chip:hover {
+    background: rgba(0, 249, 255, 0.12);
+}
+
+/* Scrollbar */
+* {
+    scrollbar-color: #087D8B #080F14;
+    scrollbar-width: thin;
+}
+
+/* Responsif */
+@media (max-width: 900px) {
+    .sidebar {
+        background: linear-gradient(180deg, #030056, #080F14);
+    }
+}

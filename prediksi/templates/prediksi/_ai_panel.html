@@ -1,0 +1,20 @@
+{# Panel Analisis AI. Parameter: jenis, judul, deskripsi, tombol, objek_id (opsional), lingkup (opsional) #}
+<section class="card ai-panel" data-url="{% url 'ai_analisis' %}" data-jenis="{{ jenis }}"
+    data-id="{{ objek_id|default:'' }}" data-lingkup="{{ lingkup|default:'' }}">
+    {% csrf_token %}
+    <div class="ai-panel-head">
+        <div>
+            <h2 class="card-title">{{ judul }}</h2>
+            <p class="card-sub">{{ deskripsi }}</p>
+        </div>
+        <button type="button" class="btn ai-btn">{{ tombol }}</button>
+    </div>
+    <div class="ai-hasil" hidden aria-live="polite"></div>
+    <div class="ai-footer" hidden>
+        <button type="button" class="btn btn-outline ai-ulang">Analisis ulang</button>
+        <a class="link-lanjut" href="{% url 'asisten' %}{% if objek_id %}?id={{ objek_id }}{% endif %}">Tanya hal lain
+            di Asisten AI &rarr;</a>
+    </div>
+    <p class="catatan">Dianalisis oleh Google Gemini dari data yang tersimpan. AI bisa keliru, dan biaya adalah
+        estimasi, bukan tagihan PLN.</p>
+</section>

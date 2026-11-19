@@ -1,0 +1,71 @@
+{% extends 'prediksi/base.html' %}
+{% load static %}
+
+{% block title %}Asisten AI{% endblock %}
+{% block judul_halaman %}Asisten AI{% endblock %}
+{% block subjudul %}Tanyakan hal lain seputar listrik kepada Google Gemini{% endblock %}
+
+{% block konten %}
+<div class="card chat-card">
+
+    <div class="chat-konteks">
+        {% if dipilih %}
+        <div class="konteks-info">
+            <strong>Data yang dianalisis:</strong>
+            Rp {{ dipilih.hasil_regresi|floatformat:"0g" }}
+            <span class="badge badge-{{ dipilih.hasil_klasifikasi|lower }}">{{ dipilih.hasil_klasifikasi }}</span>
+            <small>{{ dipilih.tanggal_prediksi|date:"d M Y, H:i" }}</small>
+        </div>
+        {% if pilihan|length > 1 %}
+        <select id="pilihPrediksi" aria-label="Pilih prediksi yang dianalisis">
+            {% for p in pilihan %}
+            <option value="{{ p.pk }}" {% if p.pk == dipilih.pk %}selected{% endif %}>
+                #{{ p.pk }} - Rp {{ p.hasil_regresi|floatformat:"0g" }} ({{ p.hasil_klasifikasi }}) - {{
+                p.tanggal_prediksi|date:"d/m H:i" }}
+            </option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        {% else %}
+        <div class="konteks-info">Belum ada prediksi. Asisten tetap bisa memberi tips umum, atau
+            <a href="{% url 'prediksi' %}" class="link-lanjut">buat prediksi dulu</a>.
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="chat-box" id="chatBox" data-url="{% url 'asisten_kirim' %}"
+        data-prediksi="{% if dipilih %}{{ dipilih.pk }}{% endif %}"
+        data-ada-prediksi="{% if dipilih %}1{% else %}0{% endif %}">
+        <div class="bubble bubble-ai">
+            <p>Halo! Saya Asisten ListrikSmart. Untuk menganalisis hasil prediksi atau grafik, gunakan tombol
+                <strong>Analisis AI</strong> di halaman Prediksi, Dashboard, atau Visualisasi.
+            </p>
+            <p>Di sini kamu bisa menanyakan hal lain seputar listrik dan penghematan energi.</p>
+        </div>
+    </div>
+
+    <div class="chips" id="chips">
+        <button type="button" class="chip" data-q="Bagaimana cara menghemat listrik dari penggunaan AC?">Hemat listrik
+            AC</button>
+        <button type="button" class="chip" data-q="Berapa suhu AC yang efisien untuk kamar tidur?">Suhu AC
+            efisien</button>
+        <button type="button" class="chip" data-q="Apa itu listrik standby dan bagaimana cara menguranginya?">Listrik
+            standby</button>
+        <button type="button" class="chip" data-q="Apa perbedaan kategori HEMAT, NORMAL, dan TINGGI?">Arti
+            kategori</button>
+    </div>
+
+    <form class="chat-form" id="chatForm">
+        {% csrf_token %}
+        <textarea id="chatInput" rows="1" maxlength="1000" placeholder="Ketik pertanyaanmu di sini..."
+            aria-label="Pertanyaan"></textarea>
+        <button type="submit" class="btn" id="chatKirim">Kirim</button>
+    </form>
+    <p class="catatan">Jawaban dibuat oleh AI dan bisa keliru. Hasil prediksi adalah estimasi, bukan tagihan resmi PLN.
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'prediksi/js/asisten.js' %}"></script>
+{% endblock %}

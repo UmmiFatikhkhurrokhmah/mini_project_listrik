@@ -1,0 +1,163 @@
+{% extends 'prediksi/base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'prediksi/css/ai-panel.css' %}">
+{% endblock %}
+
+{% block title %}Detail Prediksi{% endblock %}
+{% block judul_halaman %}Detail Prediksi #{{ d.pk }}{% endblock %}
+{% block subjudul %}{{ d.tanggal_prediksi|date:"d F Y, H:i" }} WIB{% endblock %}
+
+{% block konten %}
+
+<div class="card hasil-card">
+    <h2 class="card-title">Hasil Prediksi</h2>
+
+    <div class="hasil-grid">
+        <div>
+            <span class="stat-label">Estimasi Biaya Listrik per Bulan</span>
+            <span class="hasil-angka">
+                {{ d.hasil_regresi|floatformat:"0g" }}
+            </span>
+        </div>
+
+        <div>
+            <span class="stat-label">Kategori Biaya</span>
+            <span class="badge badge-besar badge-{{ d.hasil_klasifikasi|lower }}">
+                {{ d.hasil_klasifikasi }}
+            </span>
+        </div>
+    </div>
+
+    <p class="keterangan">{{ keterangan }}</p>
+
+    <div class="aksi">
+        <a href="{% url 'riwayat' %}" class="btn btn-outline">
+            &larr; Kembali ke Riwayat
+        </a>
+    </div>
+</div>
+
+{% include 'prediksi/_ai_panel.html' with jenis='prediksi' objek_id=d.pk judul='Analisis AI untuk Prediksi Ini'
+deskripsi='Minta AI menjelaskan hasil prediksi ini beserta rekomendasi penghematannya.' tombol='Analisis Prediksi Ini'
+%}
+
+<div class="card">
+    <h2 class="card-title">Data yang Dimasukkan</h2>
+
+    <div class="table-wrap">
+        <table class="table table-detail">
+            <tbody>
+
+                {% if d.city %}
+                <tr>
+                    <th>Kota</th>
+                    <td>{{ d.city }}</td>
+                </tr>
+
+                <tr>
+                    <th>Perusahaan</th>
+                    <td>{{ d.company|default:"-" }}</td>
+                </tr>
+
+                <tr>
+                    <th>Bulan</th>
+                    <td>Bulan {{ d.month }}</td>
+                </tr>
+
+                <tr>
+                    <th>Jumlah Kipas</th>
+                    <td>{{ d.fan }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>Jumlah Kulkas</th>
+                    <td>{{ d.refrigerator }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>Jumlah AC</th>
+                    <td>{{ d.air_conditioner }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>Jumlah Televisi</th>
+                    <td>{{ d.television }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>Jumlah Monitor</th>
+                    <td>{{ d.monitor }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>Jumlah Motor Pump</th>
+                    <td>{{ d.motor_pump }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>Total Jam Penggunaan Bulanan</th>
+                    <td>{{ d.monthly_hours|floatformat:"-1" }} jam</td>
+                </tr>
+
+                <tr>
+                    <th>Tarif Listrik</th>
+                    <td>{{ d.tariff_rate|floatformat:"2g" }}</td>
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <th>Jumlah Penghuni</th>
+                    <td>{{ d.jumlah_penghuni|default:"-" }}</td>
+                </tr>
+
+                <tr>
+                    <th>Daya Listrik</th>
+                    <td>{{ d.daya_listrik|default:"-" }}{% if d.daya_listrik %} VA{% endif %}</td>
+                </tr>
+
+                <tr>
+                    <th>Tarif Listrik</th>
+                    <td>{{ d.tarif_listrik|default:"-" }}</td>
+                </tr>
+
+                <tr>
+                    <th>Kipas</th>
+                    <td>{{ d.jumlah_kipas|default:"-" }} unit, {{ d.jam_kipas|default:"-" }} jam/hari</td>
+                </tr>
+
+                <tr>
+                    <th>Kulkas</th>
+                    <td>{{ d.jumlah_kulkas|default:"-" }} unit</td>
+                </tr>
+
+                <tr>
+                    <th>AC</th>
+                    <td>{{ d.jumlah_ac|default:"-" }} unit, {{ d.jam_ac|default:"-" }} jam/hari</td>
+                </tr>
+
+                <tr>
+                    <th>TV</th>
+                    <td>{{ d.jumlah_tv|default:"-" }} unit, {{ d.jam_tv|default:"-" }} jam/hari</td>
+                </tr>
+
+                <tr>
+                    <th>Lampu</th>
+                    <td>{{ d.jumlah_lampu|default:"-" }} unit, {{ d.jam_lampu|default:"-" }} jam/hari</td>
+                </tr>
+
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'prediksi/js/ai-analisis.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'prediksi/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'prediksi/css/ai-panel.css' %}">
+{% endblock %}
+
+{% block title %}Dashboard{% endblock %}
+{% block judul_halaman %}Dashboard{% endblock %}
+{% block subjudul %}Ringkasan aktivitas prediksi biaya listrik{% endblock %}
+
+{% block konten %}
+
+<section class="hero">
+    <div>
+        <h2>{{ sapaan }}, selamat datang di ListrikSmart!</h2>
+        <p>
+            Perkirakan biaya listrik rumahmu dari jumlah penghuni,
+            perangkat elektronik, dan lama pemakaiannya menggunakan
+            Machine Learning, lalu minta saran penghematan dari Asisten AI.
+        </p>
+        <a href="{% url 'prediksi' %}" class="btn btn-light">Mulai Prediksi</a>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="stat">
+        <span class="stat-label">Total Prediksi</span>
+        <span class="stat-value">{{ total }}</span>
+    </div>
+
+    <div class="stat">
+        <span class="stat-label">Estimasi Biaya Terakhir</span>
+        <span class="stat-value">
+            {% if terakhir %}
+            Rp {{ terakhir.hasil_regresi|floatformat:"0g" }}
+            {% else %}
+            -
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="stat">
+        <span class="stat-label">Kategori Terakhir</span>
+        <span class="stat-value">
+            {% if terakhir %}
+            <span class="badge badge-{{ terakhir.hasil_klasifikasi|lower }}">
+                {{ terakhir.hasil_klasifikasi }}
+            </span>
+            {% else %}
+            -
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="stat">
+        <span class="stat-label">Rata-rata Estimasi</span>
+        <span class="stat-value">
+            {% if rata_rata %}
+            Rp {{ rata_rata|floatformat:"0g" }}
+            {% else %}
+            -
+            {% endif %}
+        </span>
+    </div>
+</section>
+
+{% if total %}
+
+<section class="grid-2">
+    <div class="card">
+        <h2 class="card-title">Grafik Riwayat Biaya Listrik</h2>
+        <p class="card-sub">
+            Estimasi biaya pada {{ grafik.values|length }} prediksi terakhir.
+        </p>
+
+        <div class="chart-box">
+            <canvas id="grafikBiaya"></canvas>
+        </div>
+
+        <p class="chart-error" id="chartError" hidden>
+            Grafik tidak dapat dimuat. Periksa koneksi internet
+            (Chart.js dimuat dari CDN).
+        </p>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Aktivitas Terbaru</h2>
+        <p class="card-sub">5 prediksi terakhir.</p>
+
+        <ul class="aktivitas">
+            {% for r in terbaru %}
+            <li>
+                <a href="{% url 'riwayat_detail' r.pk %}">
+                    <span class="aktivitas-info">
+                        <strong>
+                            Rp {{ r.hasil_regresi|floatformat:"0g" }}
+                        </strong>
+                        <small>
+                            {{ r.tanggal_prediksi|date:"d M Y, H:i" }}
+                            &middot; {{ r.jumlah_penghuni }} penghuni
+                        </small>
+                    </span>
+
+                    <span class="badge badge-{{ r.hasil_klasifikasi|lower }}">
+                        {{ r.hasil_klasifikasi }}
+                    </span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'riwayat' %}" class="link-lanjut">
+            Lihat semua riwayat &rarr;
+        </a>
+    </div>
+</section>
+
+{% include 'prediksi/_ai_panel.html' with jenis='grafik' lingkup='dashboard' judul='Analisis AI untuk Grafik' deskripsi='AI membaca grafik riwayat di atas lalu menjelaskan arah perubahan, rentang biaya, dan saran penghematan.' tombol='Analisis Grafik dengan AI' %}
+
+{{ grafik|json_script:"data-grafik" }}
+
+{% else %}
+
+<div class="card kosong-card">
+    <h2 class="card-title">Belum ada data prediksi</h2>
+    <p class="card-sub">
+        Lakukan prediksi pertamamu. Hasilnya akan tampil di dashboard ini.
+    </p>
+    <a href="{% url 'prediksi' %}" class="btn">
+        Buat Prediksi Pertama
+    </a>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+
+{% if total %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="{% static 'prediksi/js/charts.js' %}"></script>
+<script src="{% static 'prediksi/js/ai-analisis.js' %}"></script>
+{% endif %}
+
+{% endblock %}

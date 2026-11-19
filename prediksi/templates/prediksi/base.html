@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ListrikSmart{% endblock %} | ListrikSmart</title>
+
+    <link rel="stylesheet" href="{% static 'prediksi/css/style.css' %}?v=3">
+    {% block extra_css %}{% endblock %}
+
+    <style>
+        /* Logo aplikasi */
+        .brand-logo {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    {% with nama=request.resolver_match.url_name %}
+    <div class="layout">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+
+            <!-- LOGO DAN NAMA APLIKASI -->
+            <a href="{% url 'index' %}" class="brand">
+                <span class="brand-logo">
+                    <img src="{% static 'prediksi/images/logo-listrik.png' %}" alt="Logo ListrikSmart">
+                </span>
+
+                <span class="brand-text">ListrikSmart</span>
+            </a>
+
+            <!-- MENU NAVIGASI -->
+            <nav class="menu">
+
+                <a href="{% url 'index' %}" class="menu-item {% if nama == 'index' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{% url 'prediksi' %}" class="menu-item {% if nama == 'prediksi' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                    <span>Prediksi Biaya</span>
+                </a>
+
+                <a href="{% url 'riwayat' %}"
+                    class="menu-item {% if nama == 'riwayat' or nama == 'riwayat_detail' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>Riwayat Prediksi</span>
+                </a>
+
+                <a href="{% url 'visualisasi' %}" class="menu-item {% if nama == 'visualisasi' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    <span>Visualisasi Data</span>
+                </a>
+
+                <a href="{% url 'asisten' %}" class="menu-item {% if nama == 'asisten' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    <span>Asisten AI</span>
+                </a>
+
+                <a href="{% url 'tentang' %}" class="menu-item {% if nama == 'tentang' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                    <span>Tentang Aplikasi</span>
+                </a>
+
+            </nav>
+
+            <!-- FOOTER SIDEBAR -->
+            <div class="sidebar-footer">
+                Mini Project<br>
+                Machine Learning &amp; AI
+            </div>
+
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <!-- ===== AREA UTAMA ===== -->
+        <div class="main">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <button type="button" class="menu-toggle" id="menuToggle" aria-label="Buka menu">
+
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+
+                </button>
+
+                <div class="topbar-title">
+                    <h1>{% block judul_halaman %}ListrikSmart{% endblock %}</h1>
+                    <p>{% block subjudul %}{% endblock %}</p>
+                </div>
+
+                <span class="topbar-badge">
+                    Prediksi Biaya Listrik Rumah
+                </span>
+
+            </header>
+
+            <!-- KONTEN HALAMAN -->
+            <main class="content">
+
+                {% if messages %}
+                <div class="messages">
+                    {% for pesan in messages %}
+                    <div class="alert alert-{{ pesan.tags }}">
+                        {{ pesan }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% block konten %}{% endblock %}
+
+            </main>
+
+        </div>
+    </div>
+    {% endwith %}
+
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'prediksi/js/app.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

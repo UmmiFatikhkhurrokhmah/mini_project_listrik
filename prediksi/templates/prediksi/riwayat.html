@@ -1,0 +1,147 @@
+{% extends 'prediksi/base.html' %}
+
+{% block title %}Riwayat Prediksi{% endblock %}
+{% block judul_halaman %}Riwayat Prediksi{% endblock %}
+{% block subjudul %}Daftar hasil prediksi biaya listrik rumah yang telah dilakukan{% endblock %}
+
+{% block konten %}
+<div class="card">
+    <h2 class="card-title">Riwayat Prediksi Biaya Listrik</h2>
+
+    <p class="card-sub">
+        Data diambil dari database PostgreSQL. Ditemukan {{ jumlah_total }} data.
+    </p>
+
+    <!-- Form Pencarian dan Filter -->
+    <form method="get" class="filter">
+        <input type="text" name="q" value="{{ q }}" placeholder="Cari kategori, kota, atau perusahaan">
+
+        <select name="kategori">
+            <option value="">Semua kategori</option>
+
+            {% for k in kategori_pilihan %}
+            <option value="{{ k }}" {% if kategori == k %}selected{% endif %}>
+                {{ k }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <input type="date" name="dari" value="{{ dari }}" title="Dari tanggal">
+
+        <input type="date" name="sampai" value="{{ sampai }}" title="Sampai tanggal">
+
+        <button type="submit" class="btn">Terapkan</button>
+
+        {% if ada_filter %}
+        <a href="{% url 'riwayat' %}" class="btn btn-outline">Reset</a>
+        {% endif %}
+    </form>
+
+    <!-- Tabel Riwayat -->
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal Prediksi</th>
+                    <th>Kota</th>
+                    <th>Perusahaan</th>
+                    <th>Total Jam</th>
+                    <th>Estimasi Biaya</th>
+                    <th>Kategori</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for data in riwayat %}
+                <tr>
+                    <td>{{ nomor_awal|add:forloop.counter0 }}</td>
+
+                    <td>
+                        {{ data.tanggal_prediksi|date:"d-m-Y H:i" }}
+                    </td>
+
+                    <td>
+                        {% if data.city %}
+                        {{ data.city }}
+                        {% elif data.jumlah_penghuni %}
+                        Data lama
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if data.company %}
+                        {{ data.company }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if data.monthly_hours %}
+                        {{ data.monthly_hours|floatformat:0 }} jam
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ data.hasil_regresi|floatformat:"0g" }}
+                    </td>
+
+                    <td>
+                        <span class="badge badge-{{ data.hasil_klasifikasi|lower }}">
+                            {{ data.hasil_klasifikasi }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <a href="{% url 'riwayat_detail' data.pk %}" class="link-lanjut">
+                            Lihat
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="kosong">
+                        {% if ada_filter %}
+                        Tidak ada data yang cocok dengan filter.
+                        {% else %}
+                        Belum ada riwayat prediksi.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Navigasi Halaman -->
+    {% if halaman.paginator.num_pages > 1 %}
+    <nav class="pagination">
+
+        {% if halaman.has_previous %}
+        <a href="?{% if qs_filter %}{{ qs_filter }}&{% endif %}page={{ halaman.previous_page_number }}">
+            &laquo; Sebelumnya
+        </a>
+        {% endif %}
+
+        <span>
+            Halaman {{ halaman.number }} dari {{ halaman.paginator.num_pages }}
+        </span>
+
+        {% if halaman.has_next %}
+        <a href="?{% if qs_filter %}{{ qs_filter }}&{% endif %}page={{ halaman.next_page_number }}">
+            Berikutnya &raquo;
+        </a>
+        {% endif %}
+
+    </nav>
+    {% endif %}
+
+</div>
+{% endblock %}

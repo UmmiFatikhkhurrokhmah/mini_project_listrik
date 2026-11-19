@@ -1,0 +1,63 @@
+{% extends 'prediksi/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'prediksi/css/ai-panel.css' %}">{% endblock %}
+{% block title %}Prediksi Biaya{% endblock %}
+{% block judul_halaman %}Prediksi Biaya Listrik{% endblock %}
+{% block subjudul %}Masukkan data penggunaan listrik rumah{% endblock %}
+
+{% block konten %}
+
+{% if hasil %}
+<div class="card hasil-card">
+    <h2 class="card-title">Hasil Prediksi</h2>
+    <div class="hasil-grid">
+        <div>
+            <span class="stat-label">Estimasi Biaya Listrik per Bulan</span>
+            <span class="hasil-angka">Rp {{ hasil.hasil_regresi|floatformat:"0g" }}</span>
+        </div>
+        <div>
+            <span class="stat-label">Kategori Biaya</span>
+            <span class="badge badge-besar badge-{{ hasil.hasil_klasifikasi|lower }}">{{ hasil.hasil_klasifikasi
+                }}</span>
+        </div>
+    </div>
+    <p class="keterangan">{{ keterangan }}</p>
+    <p class="catatan">Hasil ini adalah estimasi dari model Machine Learning yang dilatih dengan data simulasi, bukan
+        tagihan resmi PLN.</p>
+    <div class="aksi">
+        <a href="{% url 'riwayat_detail' hasil.pk %}" class="btn btn-outline">Lihat Detail</a>
+    </div>
+</div>
+
+{% include 'prediksi/_ai_panel.html' with jenis='prediksi' objek_id=hasil.pk judul='Analisis AI untuk Hasil Ini'
+deskripsi='Minta AI menjelaskan hasil prediksi, perangkat yang berpotensi boros, dan rekomendasi penghematan.'
+tombol='Analisis Hasil Prediksi' %}
+{% endif %}
+
+<div class="card">
+    <h2 class="card-title">Data Penggunaan Listrik</h2>
+    <p class="card-sub">Semua kolom wajib diisi. Hasil prediksi otomatis tersimpan di riwayat.</p>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-grid">
+            {% for field in form %}
+            <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-block">Prediksi Biaya Listrik</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% if hasil %}
+<script src="{% static 'prediksi/js/ai-analisis.js' %}"></script>{% endif %}
+{% endblock %}
